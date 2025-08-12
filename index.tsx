@@ -117,7 +117,8 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
             <a href="#about" className="hover:opacity-80">Обо мне</a>
             <a href="#services" className="hover:opacity-80">Услуги</a>
             <a href="#articles" className="hover:opacity-80">Статьи</a>
-            <a href="#videos" className="hover:opacity-80">Видео</a>
+          <a href="#videos" className="hover:opacity-80">Видео</a>
+          <a href="#pricing" className="hover:opacity-80">Стоимость</a>
             <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="hover:opacity-80">RuTube</a>
             <a href="#faq" className="hover:opacity-80">FAQ</a>
             <a href="#contacts" className="hover:opacity-80">Контакты</a>
@@ -169,7 +170,7 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
       </Section>
 
       {/* About / Methods */}
-      <Section id="about" title="Обо мне" subtitle="Магистр психологии. Практика онлайн. Методы: ИНП, психоанализ, коучинг.">
+      <Section id="about" title="Обо мне" subtitle="Магистр психологии. 15+ лет практики. Методы: психоанализ, коучинг, нейропрограммирование.">
         <div className="grid gap-6 sm:grid-cols-3">
           {methods.map((m) => (
             <div key={m.name} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -178,7 +179,32 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
             </div>
           ))}
         </div>
-        <div className="mt-4 text-xs text-slate-500 max-w-3xl">Магистерская степень указана во внешних документах РАНХиГС для одноимённого лица. Для окончательного подтверждения можно добавить скан диплома.</div>
+        <div className="mt-4 text-sm text-slate-700 max-w-3xl">
+          Московский Финансово‑Промышленный Университет «Синергия», магистр психологии (2018–2021).
+          Дополнительно: «Психология управления» — 216 ч (2020); «Организация мотивации персонала. Управление возражениями» — 72 ч (2021).
+        </div>
+      </Section>
+
+      {/* Experience / Focus */}
+      <Section id="focus" title="Чем помогаю" subtitle="Фокус на практических результатах и бережных изменениях">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="font-semibold text-slate-800">Выгорание</div>
+            <p className="text-sm text-slate-600 mt-1">Анализ триггеров истощения (перфекционизм, дисбаланс работа/личная жизнь), техники энергоменеджмента.</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="font-semibold text-slate-800">Кризисы отношений</div>
+            <p className="text-sm text-slate-600 mt-1">Созависимость, детско‑родительские травмы, влияние отцов на сценарии отношений дочерей.</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="font-semibold text-slate-800">Зависимости</div>
+            <p className="text-sm text-slate-600 mt-1">Лудомания, переедание (связь с тревогой), эмоциональная зависимость.</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="font-semibold text-slate-800">Тревожность и прокрастинация</div>
+            <p className="text-sm text-slate-600 mt-1">Авторская «Ресурсная практика» для восстановления внутренних сил.</p>
+          </div>
+        </div>
       </Section>
 
       {/* Services & Price */}
@@ -211,7 +237,7 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
       </Section>
 
       {/* Articles */}
-      <Section id="articles" title="Статьи" subtitle="Подборка публикаций на B17 (2022–2025)">
+      <Section id="articles" title="Статьи" subtitle="Подборка публикаций на B17 (56+ работ, 2022–2025)">
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {articles.map((a) => (
             <a key={a.url} href={a.url} target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition">
@@ -222,6 +248,22 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
           ))}
         </div>
         <div className="mt-4"><a href={b17Articles} target="_blank" rel="noopener noreferrer" className="text-sm underline text-slate-700">Смотреть все публикации</a></div>
+      </Section>
+
+      {/* Pricing */}
+      <Section id="pricing" title="Форматы и стоимость" subtitle="Онлайн и очные консультации в Москве">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="text-sm text-slate-600">Онлайн‑сессия</div>
+            <div className="mt-1 font-semibold text-slate-800">60 минут · 2 000 ₽</div>
+            <div className="text-xs text-slate-500 mt-1">Запись сессии и чек‑лист по итогу.</div>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="text-sm text-slate-600">Очная консультация · Москва</div>
+            <div className="mt-1 font-semibold text-slate-800">80 минут · 4 000 ₽</div>
+            <div className="text-xs text-slate-500 mt-1">Кабинет у м. «Красные Ворота».</div>
+          </div>
+        </div>
       </Section>
 
       {/* Videos */}
