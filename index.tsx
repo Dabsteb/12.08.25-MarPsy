@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { motion } from "framer-motion";
 import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, NotebookPen, Leaf } from "lucide-react";
@@ -19,6 +19,13 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
   // Пример: "https://rutube.ru/video/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/"
   const rutubeVideoUrls: string[] = [
     // Вставьте URL-адреса ваших видео RuTube по одному в строке
+  ];
+
+  // Список видео YouTube (ID роликов). Можно оставить пустым — тогда покажем ссылки на канал
+  const youtubeIds: string[] = [
+    "p4fheI59EEM",
+    "UO_S-lO_7PY",
+    "B9zf1Vw2QjI",
   ];
 
   // Извлекает идентификатор видео RuTube из URL для использования в embed-плеере
@@ -83,7 +90,8 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
 
   // Самопроверки
   useEffect(() => {
-    console.assert(allVideosLink.startsWith("https://rutube.ru/"), "Ожидалась ссылка на RuTube-канал");
+    console.assert(rutubeChannel.startsWith("https://rutube.ru/"), "Ожидалась ссылка на RuTube-канал");
+    console.assert(youtubeChannel.startsWith("https://www.youtube.com/"), "Ожидалась ссылка на YouTube-канал");
   }, []);
 
   // Тест-кейсы для ссылок статей: латинский slug без кириллицы
@@ -219,39 +227,87 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
 
       {/* Videos */}
       <Section id="videos" title="Видео" subtitle="Короткие разборы частых запросов">
-        <div className="flex items-center justify-between gap-3 mb-3">
-          <div className="text-sm text-slate-600">Мои видео на RuTube</div>
-          <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="text-sm rounded-xl px-3 py-2 border border-slate-300 bg-white hover:bg-slate-50 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Канал на RuTube</a>
-        </div>
-        {rutubeVideoIds.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {rutubeVideoIds.map((id) => (
-              <div key={id} className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
-                <div className="aspect-video">
-                  <iframe
-                    className="w-full h-full"
-                    src={`https://rutube.ru/play/embed/${id}`}
-                    title="Видео Марина Чикаидзе"
-                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-                    allowFullScreen
-                  />
+        {(() => {
+          const [tab, setTab] = useState<'rutube' | 'youtube'>("rutube");
+          const isRu = tab === 'rutube';
+          const channelLink = isRu ? rutubeChannel : youtubeChannel;
+          return (
+            <div>
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <div className="text-sm text-slate-600">Мои видео на {isRu ? 'RuTube' : 'YouTube'}</div>
+                <div className="flex items-center gap-2">
+                  <div className="inline-flex rounded-xl border border-slate-300 bg-white p-1" role="tablist" aria-label="Выбор платформы видео">
+                    <button onClick={() => setTab('rutube')} className={`px-3 py-1 rounded-lg text-sm ${isRu ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-50'}`} role="tab" aria-selected={isRu}>RuTube</button>
+                    <button onClick={() => setTab('youtube')} className={`px-3 py-1 rounded-lg text-sm ${!isRu ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-50'}`} role="tab" aria-selected={!isRu}>YouTube</button>
+                  </div>
+                  <a href={channelLink} target="_blank" rel="noopener noreferrer" className="text-sm rounded-xl px-3 py-2 border border-slate-300 bg-white hover:bg-slate-50 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Канал</a>
                 </div>
-                <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[1, 2].map((n) => (
-              <a key={n} href={allVideosLink} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
-                <div className="aspect-video bg-gradient-to-br from-emerald-50 to-sky-50 flex items-center justify-center">
-                  <PlayCircle className="h-10 w-10 text-emerald-600" />
-                </div>
-                <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
-              </a>
-            ))}
-          </div>
-        )}
+
+              {isRu ? (
+                rutubeVideoIds.length > 0 ? (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {rutubeVideoIds.map((id) => (
+                      <div key={id} className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+                        <div className="aspect-video">
+                          <iframe
+                            className="w-full h-full"
+                            src={`https://rutube.ru/play/embed/${id}`}
+                            title="Видео Марина Чикаидзе"
+                            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                            allowFullScreen
+                          />
+                        </div>
+                        <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {[1, 2].map((n) => (
+                      <a key={n} href={rutubeChannel} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
+                        <div className="aspect-video bg-gradient-to-br from-emerald-50 to-sky-50 flex items-center justify-center">
+                          <PlayCircle className="h-10 w-10 text-emerald-600" />
+                        </div>
+                        <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
+                      </a>
+                    ))}
+                  </div>
+                )
+              ) : (
+                youtubeIds.length > 0 ? (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {youtubeIds.map((id) => (
+                      <div key={id} className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+                        <div className="aspect-video">
+                          <iframe
+                            className="w-full h-full"
+                            src={`https://www.youtube.com/embed/${id}`}
+                            title="Видео Марина Чикаидзе"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                          />
+                        </div>
+                        <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на YouTube</div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {[1, 2].map((n) => (
+                      <a key={n} href={youtubeChannel} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
+                        <div className="aspect-video bg-gradient-to-br from-emerald-50 to-sky-50 flex items-center justify-center">
+                          <PlayCircle className="h-10 w-10 text-emerald-600" />
+                        </div>
+                        <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на YouTube</div>
+                      </a>
+                    ))}
+                  </div>
+                )
+              )}
+            </div>
+          );
+        })()}
       </Section>
 
       {/* Contacts */}
