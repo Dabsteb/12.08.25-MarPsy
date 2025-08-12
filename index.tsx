@@ -10,9 +10,10 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
   const phone = "+7 919 744-85-22";
   const tel = "tel:+79197448522";
 
-  // RuTube: канал для просмотра видео
+  // Видео-каналы
   const rutubeChannel = "https://rutube.ru/channel/67862141/";
-  const allVideosLink = rutubeChannel; // ссылка в меню, блоке Видео, Контактах и футере
+  const youtubeChannel = "https://www.youtube.com/@ПсихологОнлайнМаринаЧикаидзе";
+  const allVideosLink = rutubeChannel; // основная ссылка в меню/видео/футере
 
   const articles = [
     { title: "Право на личные границы и здоровые отношения", url: "https://www.b17.ru/article/608521/", tag: "границы" },
@@ -222,9 +223,10 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
             <a href={b17Articles} target="_blank" rel="noopener noreferrer" className="block hover:underline text-slate-800">Статьи на B17</a>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="text-sm text-slate-600">RuTube</div>
-            <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="block mt-1 font-semibold hover:underline text-slate-800">Канал с видео</a>
-            <div className="text-xs text-slate-500 mt-1">Ссылка ведёт на канал.</div>
+            <div className="text-sm text-slate-600">Видео</div>
+            <a href={rutubeChannel} target="_blank" rel="noopener noreferrer" className="block mt-1 font-semibold hover:underline text-slate-800">Канал на RuTube</a>
+            <a href={youtubeChannel} target="_blank" rel="noopener noreferrer" className="block hover:underline text-slate-800">Канал на YouTube</a>
+            <div className="text-xs text-slate-500 mt-1">Обе ссылки ведут на официальные каналы.</div>
           </div>
         </div>
       </Section>
