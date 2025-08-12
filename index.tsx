@@ -13,13 +13,16 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
 
   // Видео-каналы
   const rutubeChannel = "https://rutube.ru/channel/67862141/";
+  const rutubeAllVideos = "https://rutube.ru/channel/67862141/videos/";
   const youtubeChannel = "https://www.youtube.com/@ПсихологОнлайнМаринаЧикаидзе";
   const allVideosLink = rutubeChannel; // основная ссылка в меню/видео/футере
 
   // Список видео RuTube: вставьте сюда ссылки на страницы видео Rutube, и они автоматически появятся на сайте
   // Пример: "https://rutube.ru/video/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/"
   const rutubeVideoUrls: string[] = [
-    // Вставьте URL-адреса ваших видео RuTube по одному в строке
+    // Примеры — можно менять/добавлять свои ссылки на страницы видео RuTube
+    "https://rutube.ru/video/c72b712a97eb69727af687dbe5f77de0/",
+    "https://rutube.ru/video/64dd6d517eabaaefe7d4776a70d8cdc1/",
   ];
 
   // Список видео YouTube (ID роликов). Можно оставить пустым — тогда покажем ссылки на канал
@@ -271,7 +274,7 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
         {(() => {
           const [tab, setTab] = useState<'rutube' | 'youtube'>("rutube");
           const isRu = tab === 'rutube';
-          const channelLink = isRu ? rutubeChannel : youtubeChannel;
+          const channelLink = isRu ? rutubeAllVideos : youtubeChannel;
           return (
             <div>
               <div className="flex items-center justify-between gap-3 mb-3">
@@ -288,25 +291,29 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
               {isRu ? (
                 rutubeVideoIds.length > 0 ? (
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {rutubeVideoIds.map((id) => (
-                      <div key={id} className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
-                        <div className="aspect-video">
-                          <iframe
-                            className="w-full h-full"
-                            src={`https://rutube.ru/play/embed/${id}`}
-                            title="Видео Марина Чикаидзе"
-                            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-                            allowFullScreen
-                          />
+                    {rutubeVideoUrls.map((url) => {
+                      const id = getRutubeIdFromUrl(url);
+                      if (!id) return null;
+                      return (
+                        <div key={id} className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+                          <div className="aspect-video">
+                            <iframe
+                              className="w-full h-full"
+                              src={`https://rutube.ru/play/embed/${id}`}
+                              title="Видео Марина Чикаидзе"
+                              allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                          <a href={url} target="_blank" rel="noopener noreferrer" className="p-4 block text-sm text-slate-700 hover:underline inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Открыть на RuTube</a>
                         </div>
-                        <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="grid gap-4 sm:grid-cols-2">
                     {[1, 2].map((n) => (
-                      <a key={n} href={rutubeChannel} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
+                      <a key={n} href={rutubeAllVideos} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
                         <div className="aspect-video bg-gradient-to-br from-emerald-50 to-sky-50 flex items-center justify-center">
                           <PlayCircle className="h-10 w-10 text-emerald-600" />
                         </div>
