@@ -15,6 +15,32 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
   const youtubeChannel = "https://www.youtube.com/@ПсихологОнлайнМаринаЧикаидзе";
   const allVideosLink = rutubeChannel; // основная ссылка в меню/видео/футере
 
+  // Список видео RuTube: вставьте сюда ссылки на страницы видео Rutube, и они автоматически появятся на сайте
+  // Пример: "https://rutube.ru/video/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/"
+  const rutubeVideoUrls: string[] = [
+    // Вставьте URL-адреса ваших видео RuTube по одному в строке
+  ];
+
+  // Извлекает идентификатор видео RuTube из URL для использования в embed-плеере
+  const getRutubeIdFromUrl = (url: string): string | null => {
+    try {
+      const u = new URL(url);
+      const pathParts = u.pathname.split('/').filter(Boolean);
+      const videoIdx = pathParts.indexOf('video');
+      if (videoIdx >= 0 && pathParts[videoIdx + 1]) {
+        return pathParts[videoIdx + 1];
+      }
+      const match = url.match(/[0-9a-f-]{20,}/i);
+      return match ? match[0] : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const rutubeVideoIds: string[] = rutubeVideoUrls
+    .map((u) => getRutubeIdFromUrl(u))
+    .filter((v): v is string => Boolean(v));
+
   const articles = [
     { title: "Право на личные границы и здоровые отношения", url: "https://www.b17.ru/article/608521/", tag: "границы" },
     { title: "Как завершить отношения и прекратить страдать. Пять шагов", url: "https://www.b17.ru/article/pyat-shagov-dlya-zaversheniya-otnoshenij/", tag: "расставание" },
@@ -197,16 +223,35 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
           <div className="text-sm text-slate-600">Мои видео на RuTube</div>
           <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="text-sm rounded-xl px-3 py-2 border border-slate-300 bg-white hover:bg-slate-50 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Канал на RuTube</a>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {[1,2].map((n) => (
-            <a key={n} href={allVideosLink} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
-              <div className="aspect-video bg-gradient-to-br from-emerald-50 to-sky-50 flex items-center justify-center">
-                <PlayCircle className="h-10 w-10 text-emerald-600" />
+        {rutubeVideoIds.length > 0 ? (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {rutubeVideoIds.map((id) => (
+              <div key={id} className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+                <div className="aspect-video">
+                  <iframe
+                    className="w-full h-full"
+                    src={`https://rutube.ru/play/embed/${id}`}
+                    title="Видео Марина Чикаидзе"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+                <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
               </div>
-              <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
-            </a>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[1, 2].map((n) => (
+              <a key={n} href={allVideosLink} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
+                <div className="aspect-video bg-gradient-to-br from-emerald-50 to-sky-50 flex items-center justify-center">
+                  <PlayCircle className="h-10 w-10 text-emerald-600" />
+                </div>
+                <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
+              </a>
+            ))}
+          </div>
+        )}
       </Section>
 
       {/* Contacts */}
