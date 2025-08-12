@@ -3,18 +3,16 @@ import ReactDOM from "react-dom/client";
 import { motion } from "framer-motion";
 import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, NotebookPen, Leaf } from "lucide-react";
 
-function MarinaChikaidzeFriendlyYouTubeChannel() {
+ function MarinaChikaidzeFriendlyYouTubeChannel() {
   const b17Profile = "https://www.b17.ru/id169637/";
   const b17Articles = "https://www.b17.ru/articles/id169637/";
   const whatsapp = "https://wa.me/79197448522"; // основной канал
   const phone = "+7 919 744-85-22";
   const tel = "tel:+79197448522";
 
-  // YouTube: установлен точный URL канала
-  const youtubeIds = ["p4fheI59EEM", "UO_S-lO_7PY", "B9zf1Vw2QjI"]; // подтверждённые публикации канала
-  const youtubeChannel = "https://www.youtube.com/@ПсихологОнлайнМаринаЧикаидзе";
-  const allVideosLink = youtubeChannel; // ссылка в меню, блоке Видео, Контактах и футере
-  const ytThumb = (id) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+  // RuTube: канал для просмотра видео
+  const rutubeChannel = "https://rutube.ru/channel/67862141/";
+  const allVideosLink = rutubeChannel; // ссылка в меню, блоке Видео, Контактах и футере
 
   const articles = [
     { title: "Право на личные границы и здоровые отношения", url: "https://www.b17.ru/article/608521/", tag: "границы" },
@@ -58,8 +56,7 @@ function MarinaChikaidzeFriendlyYouTubeChannel() {
 
   // Самопроверки
   useEffect(() => {
-    console.assert(allVideosLink.startsWith("https://www.youtube.com/"), "Ожидалась ссылка на YouTube-канал");
-    console.assert(allVideosLink.includes("@"), "Ожидался формат канала с @");
+    console.assert(allVideosLink.startsWith("https://rutube.ru/"), "Ожидалась ссылка на RuTube-канал");
   }, []);
 
   // Тест-кейсы для ссылок статей: латинский slug без кириллицы
@@ -85,7 +82,7 @@ function MarinaChikaidzeFriendlyYouTubeChannel() {
             <a href="#services" className="hover:opacity-80">Услуги</a>
             <a href="#articles" className="hover:opacity-80">Статьи</a>
             <a href="#videos" className="hover:opacity-80">Видео</a>
-            <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="hover:opacity-80">YouTube</a>
+            <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="hover:opacity-80">RuTube</a>
             <a href="#faq" className="hover:opacity-80">FAQ</a>
             <a href="#contacts" className="hover:opacity-80">Контакты</a>
           </nav>
@@ -113,16 +110,18 @@ function MarinaChikaidzeFriendlyYouTubeChannel() {
           </motion.div>
 
           <motion.div variants={fade} initial="hidden" animate="show" className="justify-self-center sm:justify-self-end">
-            <img src={ytThumb("p4fheI59EEM")} alt="Марина Чикаидзе" className="h-48 w-48 sm:h-56 sm:w-56 rounded-3xl object-cover shadow-xl border border-slate-200" loading="lazy" decoding="async" />
+            <div className="h-48 w-48 sm:h-56 sm:w-56 rounded-3xl shadow-xl border border-slate-200 bg-gradient-to-br from-emerald-100 to-sky-100 flex items-center justify-center">
+              <PlayCircle className="h-16 w-16 text-emerald-600" />
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Photos */}
-      <Section id="photos" title="Фото" subtitle="Портрет и кадры из видео">
+       <Section id="photos" title="Фото" subtitle="Портрет и кадры из видео">
         <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-          {youtubeIds.map((vid) => (
-            <img key={vid} src={ytThumb(vid)} alt="Марина Чикаидзе" className="w-full aspect-[4/3] object-cover rounded-2xl border border-slate-200 shadow-sm" loading="lazy" decoding="async" />
+          {[1,2,3].map((n) => (
+            <div key={n} className="w-full aspect-[4/3] rounded-2xl border border-slate-200 shadow-sm bg-gradient-to-br from-emerald-50 to-sky-50" />
           ))}
         </div>
       </Section>
@@ -171,7 +170,7 @@ function MarinaChikaidzeFriendlyYouTubeChannel() {
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="text-sm text-slate-600">Телефон / WhatsApp</div>
             <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="block mt-1 font-semibold hover:underline text-slate-800">{phone}</a>
-            <div className="text-xs text-slate-500 mt-1">Источник: описания видео YouTube</div>
+             <div className="text-xs text-slate-500 mt-1">Источник: описания видео RuTube</div>
             <div className="mt-3"><a href={tel} className="inline-flex items-center gap-2 text-sm underline text-slate-700"><Phone className="h-4 w-4" /> Позвонить</a></div>
           </div>
         </div>
@@ -194,17 +193,17 @@ function MarinaChikaidzeFriendlyYouTubeChannel() {
       {/* Videos */}
       <Section id="videos" title="Видео" subtitle="Короткие разборы частых запросов">
         <div className="flex items-center justify-between gap-3 mb-3">
-          <div className="text-sm text-slate-600">Мои видео на YouTube</div>
-          <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="text-sm rounded-xl px-3 py-2 border border-slate-300 bg-white hover:bg-slate-50 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Канал на YouTube</a>
+          <div className="text-sm text-slate-600">Мои видео на RuTube</div>
+          <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="text-sm rounded-xl px-3 py-2 border border-slate-300 bg-white hover:bg-slate-50 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Канал на RuTube</a>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {youtubeIds.map((id) => (
-            <div key={id} className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
-              <div className="aspect-video">
-                <iframe className="w-full h-full" src={`https://www.youtube.com/embed/${id}`} title="Видео Марина Чикаидзе" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+          {[1,2].map((n) => (
+            <a key={n} href={allVideosLink} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition">
+              <div className="aspect-video bg-gradient-to-br from-emerald-50 to-sky-50 flex items-center justify-center">
+                <PlayCircle className="h-10 w-10 text-emerald-600" />
               </div>
-              <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Видео с канала</div>
-            </div>
+              <div className="p-4 text-sm text-slate-700 inline-flex items-center gap-2"><PlayCircle className="h-4 w-4" /> Смотреть на RuTube</div>
+            </a>
           ))}
         </div>
       </Section>
@@ -223,7 +222,7 @@ function MarinaChikaidzeFriendlyYouTubeChannel() {
             <a href={b17Articles} target="_blank" rel="noopener noreferrer" className="block hover:underline text-slate-800">Статьи на B17</a>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="text-sm text-slate-600">YouTube</div>
+            <div className="text-sm text-slate-600">RuTube</div>
             <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="block mt-1 font-semibold hover:underline text-slate-800">Канал с видео</a>
             <div className="text-xs text-slate-500 mt-1">Ссылка ведёт на канал.</div>
           </div>
@@ -244,7 +243,7 @@ function MarinaChikaidzeFriendlyYouTubeChannel() {
           <div className="flex items-center gap-4">
             <a href="#faq" className="hover:underline">FAQ</a>
             <a href="#contacts" className="hover:underline">Контакты</a>
-            <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="hover:underline">YouTube</a>
+            <a href={allVideosLink} target="_blank" rel="noopener noreferrer" className="hover:underline">RuTube</a>
           </div>
         </div>
       </footer>
