@@ -154,14 +154,7 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
         </div>
       </section>
 
-      {/* Photos */}
-       <Section id="photos" title="Фото" subtitle="Портрет и кадры из видео">
-        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-          {[1,2,3].map((n) => (
-            <div key={n} className="w-full aspect-[4/3] rounded-2xl border border-slate-200 shadow-sm bg-gradient-to-br from-emerald-50 to-sky-50" />
-          ))}
-        </div>
-      </Section>
+      {/* Раздел фото удалён по запросу */}
 
       {/* Values */}
       <Section id="values" title="Как я работаю" subtitle="Три опоры, которые делают процесс спокойным и безопасным">
