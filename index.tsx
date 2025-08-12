@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { motion } from "framer-motion";
-import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, NotebookPen, Leaf } from "lucide-react";
+import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, NotebookPen, Leaf, Send } from "lucide-react";
 
  function MarinaChikaidzeFriendlyYouTubeChannel() {
   const b17Profile = "https://www.b17.ru/id169637/";
   const b17Articles = "https://www.b17.ru/articles/id169637/";
   const whatsapp = "https://wa.me/79197448522"; // основной канал
+  const telegram = "https://t.me/MarinaBorisi"; // официальный телеграм-аккаунт
   const phone = "+7 919 744-85-22";
   const tel = "tel:+79197448522";
 
@@ -138,7 +139,8 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
             <h1 className="mt-4 text-3xl sm:text-5xl font-extrabold leading-tight text-slate-800">Спокойно. Бережно. По делу.</h1>
             <p className="mt-4 text-slate-700">Психолог для взрослых. Отношения и границы, зависимость и выгорание. 60 минут онлайн — <span className="font-semibold">2 000 ₽</span>.</p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl bg-emerald-600 text-white shadow hover:bg-emerald-700 inline-flex items-center gap-2"><MessageCircle className="h-4 w-4" /> Записаться в WhatsApp</a>
+              <a href={telegram} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl bg-sky-600 text-white shadow hover:bg-sky-700 inline-flex items-center gap-2"><Send className="h-4 w-4" /> Написать в Telegram</a>
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl bg-emerald-600 text-white shadow hover:bg-emerald-700 inline-flex items-center gap-2"><MessageCircle className="h-4 w-4" /> Написать в WhatsApp</a>
               <a href={b17Profile} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl border border-slate-300 bg-white hover:bg-slate-50 inline-flex items-center gap-2"><NotebookPen className="h-4 w-4" /> Профиль на B17</a>
             </div>
             <div className="mt-3 text-xs text-slate-500">Цена и запись подтверждены в карточке специалиста на B17.</div>
@@ -203,9 +205,13 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
             <div className="mt-3"><a href={b17Profile} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 bg-white inline-flex items-center gap-2"><BookOpen className="h-4 w-4" /> Перейти на B17</a></div>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="text-sm text-slate-600">Телефон / WhatsApp</div>
-            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="block mt-1 font-semibold hover:underline text-slate-800">{phone}</a>
-             <div className="text-xs text-slate-500 mt-1">Источник: описания видео RuTube</div>
+            <div className="text-sm text-slate-600">Телефон / мессенджеры</div>
+            <a href={tel} className="block mt-1 font-semibold hover:underline text-slate-800">{phone}</a>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <a href={telegram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"><Send className="h-4 w-4" /> Telegram</a>
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
+            </div>
+            <div className="text-xs text-slate-500 mt-2">Источник: описания видео RuTube</div>
             <div className="mt-3"><a href={tel} className="inline-flex items-center gap-2 text-sm underline text-slate-700"><Phone className="h-4 w-4" /> Позвонить</a></div>
           </div>
         </div>
@@ -314,9 +320,12 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
       <Section id="contacts" title="Контакты и запись">
         <div className="grid gap-6 sm:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="text-sm text-slate-600">WhatsApp</div>
-            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="block mt-1 font-semibold hover:underline text-slate-800">{phone}</a>
-            <div className="mt-3"><a href={tel} className="inline-flex items-center gap-2 text-sm underline text-slate-700"><Phone className="h-4 w-4" /> Позвонить</a></div>
+            <div className="text-sm text-slate-600">Мессенджеры</div>
+            <div className="mt-1 flex flex-col gap-1">
+              <a href={telegram} target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline text-slate-800 inline-flex items-center gap-2"><Send className="h-4 w-4" /> Telegram</a>
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="hover:underline text-slate-800 inline-flex items-center gap-2"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
+              <a href={tel} className="hover:underline text-slate-800 inline-flex items-center gap-2"><Phone className="h-4 w-4" /> {phone}</a>
+            </div>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="text-sm text-slate-600">Официальный профиль</div>
