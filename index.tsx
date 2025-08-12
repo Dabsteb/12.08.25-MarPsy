@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { motion } from "framer-motion";
 import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, NotebookPen, Leaf, Send } from "lucide-react";
@@ -82,6 +82,54 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
 
   const fade = { hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } };
 
+  // Аналитика: универсальная функция отправки событий (поддержка dataLayer/gtag/ym, если подключены)
+  const trackEvent = (category: string, action: string, label?: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const w = window as any;
+    try {
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({ event: "custom_event", category, action, label });
+      if (typeof w.gtag === "function") {
+        w.gtag("event", action, { event_category: category, event_label: label });
+      }
+      if (typeof w.ym === "function") {
+        w.ym(w.YM_COUNTER_ID || 0, "reachGoal", `${category}:${action}`, { label });
+      }
+    } catch {}
+  };
+
+  // Ленивый плеер: монтирует iframe только когда блок попадает в зону видимости
+  const LazyIframe = ({ src, title }: { src: string; title: string }) => {
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+      const el = containerRef.current;
+      if (!el) return;
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            setVisible(true);
+            io.disconnect();
+          }
+        },
+        { rootMargin: "200px" }
+      );
+      io.observe(el);
+      return () => io.disconnect();
+    }, []);
+    return (
+      <div className="aspect-video" ref={containerRef}>
+        {visible ? (
+          <iframe className="w-full h-full" src={src} title={title} loading="lazy" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-sky-50 flex items-center justify-center">
+            <PlayCircle className="h-10 w-10 text-emerald-600" />
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const Section = ({ id, title, subtitle, children }: { id: string; title: string; subtitle?: string; children: React.ReactNode }) => (
     <section id={id} className="scroll-mt-24 py-10 md:py-12">
       <div className="max-w-5xl mx-auto px-4">
@@ -143,8 +191,8 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
             <h1 className="mt-4 text-3xl sm:text-5xl font-extrabold leading-tight text-slate-800">Спокойно. Бережно. По делу.</h1>
             <p className="mt-4 text-slate-700">Психолог для взрослых. Отношения и границы, зависимость и выгорание. 60 минут онлайн — <span className="font-semibold">2 000 ₽</span>.</p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a href={telegram} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl bg-sky-600 text-white shadow hover:bg-sky-700 inline-flex items-center gap-2"><Send className="h-4 w-4" /> Написать в Telegram</a>
-              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl bg-emerald-600 text-white shadow hover:bg-emerald-700 inline-flex items-center gap-2"><MessageCircle className="h-4 w-4" /> Написать в WhatsApp</a>
+              <a onClick={() => trackEvent("cta", "telegram_hero")} href={telegram} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl bg-sky-600 text-white shadow hover:bg-sky-700 inline-flex items-center gap-2"><Send className="h-4 w-4" /> Написать в Telegram</a>
+              <a onClick={() => trackEvent("cta", "whatsapp_hero")} href={whatsapp} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl bg-emerald-600 text-white shadow hover:bg-emerald-700 inline-flex items-center gap-2"><MessageCircle className="h-4 w-4" /> Написать в WhatsApp</a>
               <a href={b17Profile} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-2xl border border-slate-300 bg-white hover:bg-slate-50 inline-flex items-center gap-2"><NotebookPen className="h-4 w-4" /> Профиль на B17</a>
             </div>
             <div className="mt-3 text-xs text-slate-500">Цена и запись подтверждены в карточке специалиста на B17.</div>
@@ -230,8 +278,8 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
             <div className="text-sm text-slate-600">Телефон / мессенджеры</div>
             <a href={tel} className="block mt-1 font-semibold hover:underline text-slate-800">{phone}</a>
             <div className="mt-3 flex flex-wrap gap-2">
-              <a href={telegram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"><Send className="h-4 w-4" /> Telegram</a>
-              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
+              <a onClick={() => trackEvent("cta", "telegram_services")} href={telegram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"><Send className="h-4 w-4" /> Telegram</a>
+              <a onClick={() => trackEvent("cta", "whatsapp_services")} href={whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
             </div>
             <div className="text-xs text-slate-500 mt-2">Источник: описания видео RuTube</div>
             <div className="mt-3"><a href={tel} className="inline-flex items-center gap-2 text-sm underline text-slate-700"><Phone className="h-4 w-4" /> Позвонить</a></div>
@@ -364,8 +412,8 @@ import { Phone, MessageCircle, BookOpen, PlayCircle, Shield, HeartHandshake, Not
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="text-sm text-slate-600">Мессенджеры</div>
             <div className="mt-1 flex flex-col gap-1">
-              <a href={telegram} target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline text-slate-800 inline-flex items-center gap-2"><Send className="h-4 w-4" /> Telegram</a>
-              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="hover:underline text-slate-800 inline-flex items-center gap-2"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
+              <a onClick={() => trackEvent("cta", "telegram_contacts")} href={telegram} target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline text-slate-800 inline-flex items-center gap-2"><Send className="h-4 w-4" /> Telegram</a>
+              <a onClick={() => trackEvent("cta", "whatsapp_contacts")} href={whatsapp} target="_blank" rel="noopener noreferrer" className="hover:underline text-slate-800 inline-flex items-center gap-2"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
               <a href={tel} className="hover:underline text-slate-800 inline-flex items-center gap-2"><Phone className="h-4 w-4" /> {phone}</a>
             </div>
           </div>
